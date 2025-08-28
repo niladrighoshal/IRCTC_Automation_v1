@@ -53,8 +53,8 @@ def create_webdriver(instance_id, is_headless=False, use_gpu=True):
     print(f"[WebDriverFactory] Using persistent profile for instance {instance_id}: {profile_path}")
 
     try:
-        # Let undetected_chromedriver automatically find the correct driver version
-        driver = uc.Chrome(options=options)
+        # Force driver version 109 to match the user's browser and prevent crashes.
+        driver = uc.Chrome(options=options, version_main=109)
         return driver
 
     except Exception as e:
