@@ -22,29 +22,32 @@ def create_webdriver(instance_id, is_headless=False, use_gpu=True):
     options.add_argument("--disable-notifications")
     options.add_argument("--disable-popup-blocking")
     options.add_argument("--disable-extensions")
+    options.add_argument("--disable-background-mode")
 
     prefs = {
         "credentials_enable_service": False,
-        "profile.password_manager_enabled": False
+        "profile.password_manager_enabled": False,
+        "profile.exit_type": "Normal",
+        "background_mode.enabled": False
     }
     options.add_experimental_option("prefs", prefs)
 
     # --- Paths ---
-    brave_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+    chromium_path = r"C:\Users\Niladri_Ghoshal\AppData\Local\Chromium\Application\chrome.exe"
 
     # --- Scalable, Persistent Profile Creation ---
     # Create a master profile directory if it doesn't exist
-    base_profile_dir = os.path.join(os.getcwd(), "BraveProfile")
+    base_profile_dir = os.path.join(os.getcwd(), "ChromiumProfile")
     os.makedirs(base_profile_dir, exist_ok=True)
 
-    # Create a path for the specific bot instance (e.g., BraveProfile/bot_1)
+    # Create a path for the specific bot instance (e.g., ChromiumProfile/bot_1)
     profile_path = os.path.join(base_profile_dir, f"bot_{instance_id}")
     os.makedirs(profile_path, exist_ok=True) # This ensures the profile is created if new, or reused if it exists
 
-    if os.path.exists(brave_path):
-        options.binary_location = brave_path
+    if os.path.exists(chromium_path):
+        options.binary_location = chromium_path
     else:
-        print(f"[WebDriverFactory] WARNING: Brave browser not found at '{brave_path}'. Relying on default.")
+        print(f"[WebDriverFactory] WARNING: Chromium browser not found at '{chromium_path}'. Relying on default.")
 
     options.add_argument(f"--user-data-dir={profile_path}")
     print(f"[WebDriverFactory] Using persistent profile for instance {instance_id}: {profile_path}")
